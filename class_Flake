@@ -1,0 +1,40 @@
+class Flake {
+  float x, y;   // location
+  float speed;  // speed
+  color c; // color
+  float r; // radius
+
+  Flake() { //Flake class is defined here.
+    r = 6;                   // All flakes (ellipses) have the same radius
+    x = random(width);
+    y = -r*4;                // Spawn flake right above top of window
+    speed = random(4, 6);
+    c = color(255, 255, 255, 75);
+  }
+
+  // Move the snow down the screen in increments defined by the speed.
+  void move() {
+    y += speed;
+  }
+
+  // Check if the snow reaches the bottom of the screen
+  boolean bottomHit() {
+    // Return snow to the top if it does hit the bottom
+    if (y > height + r*4) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // Display the snow.
+  void display() { //Calls display function from the main code on Line 20
+    fill(c); //White, opacity 75
+    noStroke();
+    
+    //When inside the given parameters, the function creates the snowflakes.
+    for (int i = 2; i < r; i++ ) {
+      ellipse(x, y, i*2, i*2);
+    }
+  }
+}
