@@ -1,0 +1,32 @@
+/*
+  While building my code, the snow did not fall in smooth intervals and the code
+ looked choppy and poorly written. So, I studied the Learning Processing book for
+ advice and learned I need a timer. So, I made this timer to smoothly spawn
+ new snowflakes at a fixed rate.
+ */
+class Timer {
+
+  int totalTime; // How long Timer should last
+  int savedTime; // When Timer started
+
+  //Create timer using a new variable separate from totalTime
+  Timer(int tempTime) {
+    totalTime = tempTime;
+  }
+  //When the timer starts, it stores the current time in ms.
+  void start() {
+    savedTime = millis();
+  }
+
+  // isFinished determines when to stop the timer
+  boolean isFinished() {
+    //Define passedTime to check how much time passed
+    int passedTime = millis()- savedTime;
+    //If the given time allotment has passed, function isFinished() returns as true.
+    if (passedTime > totalTime) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
