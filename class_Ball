@@ -1,0 +1,103 @@
+class Ball {
+  int xball;
+  int yball;
+  int bsize;
+  float xSpeed;
+  float ySpeed;
+  int pointValue;   //how many points the spawned ball is worth
+  int direction;    //the direction ball starts in
+
+  Ball (int xball, int yball, int bsize, float xSpeed, float ySpeed, int pointValue, int direction) {
+    this.xball = xball;      //initial x and y position should be center of screen
+    this.yball = yball;
+    this.bsize = bsize;
+    this.xSpeed = xSpeed;
+    this.ySpeed = ySpeed;
+    this.pointValue = pointValue;
+    this.direction = direction;
+  }
+
+  //void functions
+  void spawn () {
+    switch(pointValue) {            //assigns Ball color based on how many points ball is worth (random)
+    case 1:
+      fill(#D80202);    //red +1
+      break;
+    case 2:
+      fill(#6BC94F);    //green +2
+      break;
+    case 3:
+      fill(#BFBDB7);   //silver +3
+      break;
+    case 4:
+      fill(#D8B837); //gold +4
+      break;
+    case 5:
+      fill(random(255), random(255), random(255));   //rainbow +5
+    }
+    ellipse(xball, yball, bsize, bsize);
+  }
+  void startMove() {        //What dierection the ball goes at the start of the game (random)
+    switch (direction) {
+    case 0:
+      xball -= xSpeed;
+      yball -= ySpeed;
+      break;
+    case 1:
+      xball -= xSpeed;
+      yball += ySpeed;
+      break;
+    case 2:
+      xball += xSpeed;
+      yball += ySpeed;
+      break;
+    case 3:
+      xball += xSpeed;
+      yball -= ySpeed;
+      break;
+    }
+  }
+  void boundaryBall() {                                  //Ball bounces off ceiling and floor
+    if (yball > height || yball < 50 + bsize / 2) {
+      ySpeed *= -1;
+    }
+
+    if (xball + bsize / 2 < -3.7 || xball - bsize / 2 > width + 3.7) {    //Resets the Ball when a player scores
+      xball = width / 2 ;
+      yball = height / 2;
+      xSpeed = 3;
+      direction = int (random(0, 4));
+      pointValue = int(random(1, 6));
+    }
+  }
+
+  void  interactL(int xpaddle, int ypaddle, int wpaddle, int hpaddle) {            //Interaction between the Ball and left Paddle (player1)
+    if ((xball - bsize / 2 < xpaddle + wpaddle) && (yball > ypaddle - hpaddle) && (yball < ypaddle + hpaddle)) {
+      xSpeed *= -1.2;
+      if (xSpeed > 8) {
+        xSpeed = 8;
+      }
+    }
+  }
+
+  void  interactR(int xpaddle, int ypaddle, int wpaddle, int hpaddle) {          //Interaction between the Ball and right paddle (player2)
+    if ((xball + bsize / 2 > xpaddle - wpaddle) && (yball > ypaddle - hpaddle) && (yball < ypaddle + hpaddle)) {
+      xSpeed *= -1.2;
+    }
+    if (xSpeed > 8) {
+      xSpeed = 8;
+    }
+  }
+
+  int getBallX() {
+    return xball;
+  }
+
+  int getBallS() {
+    return bsize / 2;
+  }
+
+  int sendValue() {
+    return pointValue;
+  }
+}
