@@ -1,0 +1,79 @@
+Timer timer;        // timer
+Flake[] flakes;
+Ball ball;
+Paddle leftpaddle;
+Paddle rightpaddle;
+Scoreboard leftScore;
+Scoreboard rightScore;
+
+int x;
+int y;
+int bsize = 20;
+int totalFlakes = 0; // Total number of snowflakes
+PImage backdrop;
+int t = 200;
+
+void setup() {
+  size(900, 700);
+  backdrop = loadImage("backdrop.jpg");
+  flakes = new Flake[500];    // Creates 500 snow "flakes" in the array
+  timer = new Timer(t);     // Timer, goes off every 300ms (0.3 s)
+  timer.start();
+  ball = new Ball(width / 2, height / 2, bsize, 3, 5, int(random(1, 6)), int(random(0, 4)));
+  //int x, int y, bsize, int xspeed, int yspeed, int pointvalue, int direction
+  leftpaddle = new Paddle (20, height / 2, 10, 100, color (0, 0, 255), 10);
+  //int xPad, int yPad, int wPad, int hPad, color c, float ypadSpeed
+  rightpaddle = new Paddle (width - 20, height / 2, 10, 100, color (0, 0, 255), 10);
+  leftScore = new Scoreboard (width / 2, 0, 40, 50);
+  rightScore = new Scoreboard (width / 2, 0, 40, 50);// Starting the timer
+}
+//Line 10: For new Timer(t), t is the rate at which the snow spawns in miliseconds
+
+void draw() {
+  background(25);
+  image(backdrop, 0, 0, 900, 700); //Loads the backdrop image in, set to fill 900x600
+ 
+  leftScore.Ldisplay();
+  rightScore.Rdisplay();
+
+  //spawns ball
+  ball.spawn();
+  ball.startMove();
+  ball.boundaryBall();
+
+  //spawn paddles
+  leftpaddle.spawn();
+  leftpaddle.bounds();
+  leftpaddle.LpadMove();
+
+  rightpaddle.bounds();
+  rightpaddle.spawn();
+  rightpaddle.RpadMove();
+
+
+  //player1 and player2 send their variables to their respective interaction functions in the Ball class
+  ball.interactL(leftpaddle.getPaddleX(), leftpaddle.getPaddleY(), leftpaddle.getPaddleW(), leftpaddle.getPaddleH());
+  ball.interactR(rightpaddle.getPaddleX(), rightpaddle.getPaddleY(), rightpaddle.getPaddleW(), rightpaddle.getPaddleH());
+
+  //Updates score
+  leftScore.updateLScore(ball.getBallX(), ball.getBallS(), ball.sendValue());
+  rightScore.updateRScore(ball.getBallX(), ball.getBallS(), ball.sendValue());
+  //Move and display the snow for the given parameters.
+  for (int i = 0; i < totalFlakes; i++ ) {
+    flakes[i].move();
+    flakes[i].display();
+  }
+  //Spawn flakes if timer finishes, and keep adding flakes at a fixed rate.
+
+  if (timer.isFinished()) {
+    flakes[totalFlakes] = new Flake();
+    totalFlakes ++ ;
+
+    //Start the array over if it ends
+
+    if (totalFlakes >= flakes.length) {
+      totalFlakes = 0;
+    }
+    timer.start(); //Timer begins, after checking if the array ended
+  }
+}
