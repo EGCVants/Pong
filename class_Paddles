@@ -1,0 +1,66 @@
+class Paddle {
+  int xPad;
+  int yPad;
+  int wPad;
+  int hPad;
+  color c;
+  float ypadSpeed;
+
+  Paddle (int xPad, int yPad, int wPad, int hPad, color c, float ypadSpeed) {
+    this.xPad = xPad;
+    this.yPad = yPad;
+    this.wPad = wPad;
+    this.hPad = hPad;
+    this.c = c;
+    this.ypadSpeed = ypadSpeed;
+  }
+
+  void spawn () {
+    rectMode(CENTER);
+    fill(c);
+    rect(xPad, yPad, wPad, hPad);
+  }
+  void bounds () {                 //Keeps player from moving off screen
+    if (yPad > height - hPad/2) {
+      yPad = height - hPad/2;
+    } else if (yPad < 50 + hPad/2) {
+      yPad = hPad/2 + 50;
+    }
+  }
+
+  //Get functions to send Paddle variables to the Ball class for the interaction between objects
+  int getPaddleX() {
+    return xPad;
+  }
+  int getPaddleY() {
+    return yPad;
+  }
+  int getPaddleW() {
+    return wPad / 2;
+  }
+  int getPaddleH() {
+    return hPad / 2;
+  }
+
+
+  //Player controls
+  void LpadMove() {
+    if (keyPressed) {
+      if (key == 'w') {
+        yPad -= 7;
+      } else if (key == 's') {
+        yPad += 7;
+      }
+    }
+  }
+
+  void RpadMove() {
+    if (keyPressed) {
+      if (keyCode == UP) {
+        yPad -= 7;
+      } else if (keyCode == DOWN) {
+        yPad += 7;
+      }
+    }
+  }
+}
