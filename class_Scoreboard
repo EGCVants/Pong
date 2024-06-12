@@ -1,0 +1,48 @@
+class Scoreboard {
+  int xboard;
+  int yboard;
+  int wboard;
+  int hboard;
+  int player1score;
+  int player2score;
+
+  Scoreboard(int xboard, int yboard, int wboard, int hboard) {
+    this.xboard = xboard;
+    this.yboard = yboard;
+    this.wboard = wboard;
+    this.hboard = hboard;
+    player1score = 0;
+    player2score = 0;
+  }
+
+  void Ldisplay() {            //left scoreboard
+    rectMode(CENTER);
+    fill(200);
+    textAlign(CENTER);
+    rect(xboard - wboard, yboard + hboard / 2, wboard, hboard);
+    fill(0, 0, 255);
+    textSize(30);
+    text (nf(player1score, 1), xboard - wboard, yboard + hboard / 2 + 10);    //displays player1 score, increment based on Ball value
+  }
+
+  void Rdisplay() {            //right scoreboard
+    rectMode(CENTER);
+    fill(200);
+    textAlign(CENTER);
+    rect(xboard + wboard, yboard + hboard / 2, wboard, hboard);
+    fill(0, 0, 255);
+    textSize(30);
+    text (nf (player2score, 1), xboard + wboard, yboard + hboard / 2 + 10);  //displays player2 score, increment based on Ball value
+  }
+  void updateLScore (int xball, int bsize, int pointvalue) {              //Recives Ball x coordinate, size, and value to update left player score
+    if (xball - bsize > width) {
+      player1score += pointvalue;
+    }
+  }
+
+  void updateRScore (int xball, int bsize, int pointvalue) {             //Recives Ball x coordinate, size, and value to update left player score
+    if (xball + bsize < 0) {
+      player2score += pointvalue;
+    }
+  }
+}
